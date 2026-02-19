@@ -148,7 +148,7 @@ Unnumbered `{{answer}}` is equivalent to `{{c1::answer}}`.
 
 ```json
 {
-  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "uuid": "1e9de75e-e39b-4857-9481-8baa708dc15a",
   "schemaVersion": "passpack-v1",
   "text": "I'm gonna grab a bite."
 }
@@ -169,7 +169,7 @@ The `media` object references files bundled in the card pack.
 | `visual` | string | ❌ | Path to video (.mp4) or image (.jpg/.png) |
 | `audio` | string | ❌ | Path to standalone audio file (.m4a) |
 
-All paths are relative to the card pack root. A card with `"visual": "media/a1b2c3d4.mp4"` maps to the file `media/a1b2c3d4.mp4` inside the ZIP archive.
+All paths are relative to the card pack root. A card with `"visual": "media/1e9de75e.mp4"` maps to the file `media/1e9de75e.mp4` inside the ZIP archive.
 
 ### 3.2 Media Format Requirements
 
@@ -189,8 +189,8 @@ All paths are relative to the card pack root. A card with `"visual": "media/a1b2
 
 ```json
 "media": {
-  "visual": "media/a1b2c3d4.mp4",
-  "audio": "media/a1b2c3d4.m4a"
+  "visual": "media/1e9de75e.mp4",
+  "audio": "media/1e9de75e.m4a"
 }
 ```
 
@@ -352,8 +352,8 @@ A `.passpack` file is a ZIP archive.
 unit_01_greetings.passpack
 ├── manifest.json
 └── media/
-    ├── a1b2c3d4.mp4
-    ├── a1b2c3d4.m4a
+    ├── 1e9de75e.mp4
+    ├── 1e9de75e.m4a
     ├── b2c3d4e5.jpg
     └── ...
 ```
@@ -399,13 +399,13 @@ The `manifest.json` file describes the pack and contains all cards.
   "cardCount": 1,
   "cards": [
     {
-      "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "uuid": "1e9de75e-e39b-4857-9481-8baa708dc15a",
       "schemaVersion": "passpack-v1",
       "text": "I'm gonna grab a bite.",
       "cardType": "sentence",
       "source": "The Middle S01E03",
       "media": {
-        "visual": "media/a1b2c3d4.mp4"
+        "visual": "media/1e9de75e.mp4"
       },
       "analysis": [
         {
@@ -518,7 +518,7 @@ Current: `passpack-v1`
 | Scope | Convention | Example |
 |-------|------------|---------|
 | JSON fields | camelCase | `sourceLang`, `cardType` |
-| Media file names | UUID-based (recommended, not required) | `a1b2c3d4.mp4` |
+| Media file names | UUID-based (recommended, not required) | `1e9de75e.mp4` |
 | Enum values | lowercase | `sentence`, `known`, `ai+human` |
 | Deck separator | `/` | `IELTS/Listening/Part 1` |
 | Custom fields | `x_` prefix | `x_myapp_score` |
@@ -562,7 +562,7 @@ A conforming reader MUST:
 
 A conforming writer MUST:
 - Produce valid UTF-8 JSON
-- Include all required fields in every card
+- Include all required fields in every card (`schemaVersion` MAY be omitted from cards inside a manifest that declares it at pack level)
 - Ensure `manifest.cardCount` equals `cards.length`
 - Ensure all media paths in cards reference files that exist in the archive
 - Use UUID v4 for card identifiers
@@ -682,7 +682,7 @@ For vocabulary cards.
 
 ```json
 {
-  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "uuid": "1e9de75e-e39b-4857-9481-8baa708dc15a",
   "schemaVersion": "passpack-v1",
   "text": "I'm gonna grab a bite.",
   "cardType": "sentence",
@@ -690,8 +690,8 @@ For vocabulary cards.
   "targetLang": "zh-CN",
   "source": "The Middle S01E03",
   "media": {
-    "visual": "media/a1b2c3d4.mp4",
-    "audio": "media/a1b2c3d4.m4a"
+    "visual": "media/1e9de75e.mp4",
+    "audio": "media/1e9de75e.m4a"
   },
   "analysis": [
     {

@@ -43,7 +43,7 @@ PassPack 是一个**开放的语言学习卡片标准**。它定义了卡片、�
 
 | 字段 | 说明 | 举例 |
 |------|------|------|
-| `uuid` | 全球唯一 ID | `a1b2c3d4-e5f6-...` |
+| `uuid` | 全球唯一 ID (UUID v4) | `1e9de75e-e39b-...` |
 | `schemaVersion` | 格式版本 | `passpack-v1` |
 | `text` | 原文内容（一个词、一句话、一段对话都行） | `I'm gonna grab a bite.` |
 
@@ -70,7 +70,7 @@ PassPack 是一个**开放的语言学习卡片标准**。它定义了卡片、�
 
 ```json
 {
-  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "uuid": "1e9de75e-e39b-4857-9481-8baa708dc15a",
   "schemaVersion": "passpack-v1",
   "text": "I'm gonna grab a bite."
 }
@@ -144,7 +144,7 @@ formality、bestFor、avoidWith、grammar、commonMistakes、culturalNote 等字
 
 pronunciation、partOfSpeech、definitions 等字段。
 
-**社区可以注册新的分析类型**，用 `x-` 前缀避免冲突。App 遇到不认识的类型直接跳过。
+**社区可以注册新的分析类型**，用 `x_` 前缀避免冲突（与自定义字段统一）。App 遇到不认识的类型直接跳过。
 
 ---
 
@@ -176,12 +176,12 @@ pronunciation、partOfSpeech、definitions 等字段。
 
 ```json
 [
-  { "date": "2026-01-15", "rating": 3 },
-  { "date": "2026-01-22", "rating": 4 }
+  { "date": "2026-01-15T08:30:00Z", "rating": 3 },
+  { "date": "2026-01-22T19:15:00Z", "rating": 4 }
 ]
 ```
 
-评分 1-4：1=完全忘了，2=想了很久，3=想了一下，4=秒回忆。这是 Anki/FSRS 的事实标准。
+`date` 必须是 ISO 8601 UTC 时间。评分 1-4：1=完全忘了，2=想了很久，3=想了一下，4=秒回忆。这是 Anki/FSRS 的事实标准。
 
 新 App 拿到完整日志，可以用自己的算法重跑一遍，几乎完美还原。
 
@@ -195,7 +195,7 @@ ZIP 压缩包：
 unit_01.passpack
 ├── manifest.json
 └── media/
-    ├── a1b2c3d4.mp4
+    ├── 1e9de75e.mp4
     └── ...
 ```
 
@@ -237,9 +237,9 @@ unit_01.passpack
 | 规则 | 说明 |
 |------|------|
 | 自定义字段 | `x_` 开头，其他 App 忽略 |
-| 自定义分析类型 | `x-` 开头 |
+| 自定义分析类型 | `x_` 开头 |
 | 不认识的字段 | 忽略，不报错（像浏览器对待未知 HTML 标签一样） |
-| 不认识的版本号 | 报错，提示用户升级 |
+| 不认识的 `schemaVersion` 大版本号 | 报错，提示用户升级 |
 
 **宽容读取，严格写入。**
 
