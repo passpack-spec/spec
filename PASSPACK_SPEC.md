@@ -516,16 +516,7 @@ PassPack separates specification licensing from content licensing.
 
 ### 11.2 Recommended Default: CC BY-NC-SA 4.0
 
-| Use Case | Allowed |
-|----------|---------|
-| Personal study in any app | ✅ |
-| Sharing packs with friends or communities | ✅ |
-| Building a free/open-source app that reads .passpack | ✅ |
-| A company bundling cards into a paid product | ❌ |
-| A school/institution reselling card content | ❌ |
-| Adapting cards and sharing under same license | ✅ |
-
-**Users can use cards freely. Businesses cannot resell the content.**
+The recommended default for community-contributed content is [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) — personal use and sharing allowed, commercial resale prohibited.
 
 Pack authors MAY choose any license by setting `manifest.license`.
 
@@ -626,26 +617,9 @@ For vocabulary cards.
 
 ---
 
-## Appendix B: Comparison with Existing Formats
-
-| Feature | Anki (.apkg) | Mochi (.mochi) | SuperMemo (XML) | Quizlet | **PassPack** |
-|---------|-------------|----------------|-----------------|---------|-------------|
-| Has formal spec | ❌ | ❌ | Partial | ❌ | **✅** |
-| Format | SQLite+ZIP | EDN+ZIP | XML | Proprietary | **JSON+ZIP** |
-| Card structure | Free HTML templates | Markdown sides | Q&A | Front/Back | **Structured fields** |
-| Rich media | ✅ Embedded | ✅ Embedded | External ref | Images only | **✅ Embedded** |
-| AI analysis layer | ❌ | ❌ | ❌ | ❌ | **✅ Extensible** |
-| Tags | ✅ | ✅ | ✅ | ❌ | **✅** |
-| Deck hierarchy | ✅ (`::`) | ✅ | ✅ (tree) | Single level | **✅ (`/`)** |
-| User notes | In fields | ✅ | ❌ | ❌ | **✅ Dedicated** |
-| Difficulty rating | ❌ | ❌ | ❌ | ❌ | **✅ CEFR** |
-| Import dedup | ✅ (note id) | ✅ (card id) | ❌ | ❌ | **✅ UUID** |
-| Progress separated | ❌ Mixed | ❌ Mixed | ❌ | ❌ | **✅ Separated** |
-| Open source | ✅ | Partial | ✅ | ❌ | **✅** |
-
 ---
 
-## Appendix C: Full Card Example
+## Appendix B: Full Card Example
 
 ```json
 {
