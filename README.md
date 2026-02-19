@@ -41,7 +41,7 @@ A minimal PassPack card:
 
 ```json
 {
-  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "uuid": "1e9de75e-e39b-4857-9481-8baa708dc15a",
   "schemaVersion": "passpack-v1",
   "text": "I'm gonna grab a bite."
 }
@@ -51,7 +51,7 @@ A rich card with media and AI analysis:
 
 ```json
 {
-  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "uuid": "1e9de75e-e39b-4857-9481-8baa708dc15a",
   "schemaVersion": "passpack-v1",
   "text": "I'm gonna grab a bite.",
   "cardType": "sentence",
@@ -59,7 +59,7 @@ A rich card with media and AI analysis:
   "targetLang": "zh-CN",
   "source": "The Middle S01E03",
   "media": {
-    "visual": "a1b2c3d4.mp4"
+    "visual": "media/1e9de75e.mp4"
   },
   "analysis": [
     {
@@ -90,7 +90,7 @@ A `.passpack` file is a ZIP archive:
 unit_01.passpack
 ├── manifest.json
 └── media/
-    ├── a1b2c3d4.mp4
+    ├── 1e9de75e.mp4
     └── ...
 ```
 
