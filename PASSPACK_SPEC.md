@@ -552,7 +552,7 @@ Pack authors MAY choose any license by setting `manifest.license`.
 
 A conforming reader MUST:
 - Parse `manifest.json` as UTF-8 JSON
-- Accept any card with the three required fields (`uuid`, `schemaVersion`, `text`)
+- Accept any card with `uuid` and `text`; `schemaVersion` is also required for standalone cards, but MAY be inherited from the manifest when cards are inside a pack
 - Ignore unknown fields silently
 - Ignore unknown analysis types silently
 - Reject unknown `schemaVersion` major versions with a clear error
