@@ -76,7 +76,7 @@ A rich card with media and AI analysis:
       }
     }
   ],
-  "deck": "PathEnglish-900/Unit 1",
+  "deck": "American TV/Unit 1",
   "difficulty": "A2",
   "tags": ["daily_life", "eating"]
 }

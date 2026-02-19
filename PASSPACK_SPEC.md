@@ -113,7 +113,7 @@ The Common European Framework of Reference for Languages:
 Use `/` to express hierarchy:
 
 ```
-"deck": "PathEnglish-900/Unit 1"
+"deck": "American TV/Unit 1"
 "deck": "IELTS/Listening/Part 1"
 "deck": "My Vocabulary/Daily"
 ```
@@ -366,11 +366,11 @@ The `manifest.json` file describes the pack and contains all cards.
   "schemaVersion": "passpack-v1",
   "title": "Unit 1 — Daily Greetings",
   "description": "15 essential greeting expressions from The Middle",
-  "author": "PathEnglish Team",
+  "author": "Jane Smith",
   "license": "CC BY-NC-SA 4.0",
   "sourceLang": "en",
   "targetLang": "zh-CN",
-  "generator": "PathEnglish Studio v1.0",
+  "generator": "MyApp v1.0",
   "generatedAt": "2026-02-19T10:30:00Z",
   "cardCount": 1,
   "cards": [
@@ -399,7 +399,7 @@ The `manifest.json` file describes the pack and contains all cards.
         }
       ],
       "tags": ["daily_life", "eating"],
-      "deck": "PathEnglish-900/Unit 1",
+      "deck": "American TV/Unit 1",
       "difficulty": "A2",
       "origin": "official"
     }
@@ -669,7 +669,7 @@ For vocabulary cards.
     }
   ],
   "tags": ["daily_life", "eating"],
-  "deck": "PathEnglish-900/Unit 1",
+  "deck": "American TV/Unit 1",
   "notes": "",
   "difficulty": "A2",
   "origin": "official",

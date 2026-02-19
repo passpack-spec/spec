@@ -58,7 +58,7 @@ PassPack 是一个**开放的语言学习卡片标准**。它定义了卡片、�
 | `media` | 关联媒体 | 见 §3 |
 | `analysis` | AI 分析层 | 见 §4 |
 | `tags` | 标签 | `["daily_life", "greeting"]` |
-| `deck` | 所属甲板，`/` 分层 | `PathEnglish-900/Unit 1` |
+| `deck` | 所属甲板，`/` 分层 | `American TV/Unit 1` |
 | `notes` | 用户笔记 | |
 | `origin` | 谁做的 | `official` / `community` / `import` / `manual` |
 | `difficulty` | CEFR 难度 | `A1` ~ `C2` |
