@@ -3,11 +3,16 @@
 **Version**: 1.0  
 **Status**: Draft  
 **Date**: 2026-02-19  
-**License**: CC BY-SA 4.0 (this specification)
+**License**: CC BY-SA 4.0 (this specification)  
+**Encoding**: All JSON files MUST be encoded in UTF-8 without BOM.
 
 ---
 
 ## 1. Introduction
+
+### 1.0 Conventions
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 ### 1.1 What is PassPack?
 
@@ -53,7 +58,7 @@ A Card is a JSON object. Only three fields are required — everything else is o
 | Field | Type | Description |
 |-------|------|-------------|
 | `uuid` | string (UUID v4) | Globally unique identifier. Never changes once assigned. |
-| `schemaVersion` | string | Always `"passpack-v1"` for this version of the spec. |
+| `schemaVersion` | string | Always `"passpack-v1"` for this version. REQUIRED for standalone cards; OPTIONAL inside a manifest (inherits from manifest if omitted). |
 | `text` | string | The core content — a word, sentence, paragraph, or dialogue. |
 
 ### 2.2 Optional Fields
@@ -81,12 +86,14 @@ A Card is a JSON object. Only three fields are required — everything else is o
 |-------|-------------|
 | `sentence` | Sentence, paragraph, or dialogue (default) |
 | `vocabulary` | Single word or phrase |
-| `cloze` | Fill-in-the-blank (use `{{answer}}` to mark blanks in `text`) |
+| `cloze` | Fill-in-the-blank (see §2.8) |
 | `free` | Freeform — any content the user wants |
 
 The `cardType` field is a hint to the rendering app. A card is valid regardless of its type.
 
 ### 2.4 Origin Values
+
+The following are well-known values. Implementations MAY use additional values.
 
 | Value | Description |
 |-------|-------------|
@@ -120,7 +127,24 @@ Use `/` to express hierarchy:
 
 Apps SHOULD support at least 3 levels of nesting.
 
-### 2.7 Minimal Card
+### 2.7 Cloze Syntax
+
+For `cloze` cards, blanks in `text` are marked with double curly braces: `{{answer}}`.
+
+For multiple blanks, use numbered notation: `{{c1::answer1}}`, `{{c2::answer2}}`.
+
+Examples:
+
+```
+"text": "I'm gonna {{grab a bite}}."
+"text": "I {{c1::have}} a {{c2::dream}}."
+```
+
+When displaying, apps SHOULD replace each `{{...}}` with a blank. The content inside is the expected answer.
+
+Unnumbered `{{answer}}` is equivalent to `{{c1::answer}}`.
+
+### 2.8 Minimal Card
 
 ```json
 {
@@ -145,7 +169,7 @@ The `media` object references files bundled in the card pack.
 | `visual` | string | ❌ | Path to video (.mp4) or image (.jpg/.png) |
 | `audio` | string | ❌ | Path to standalone audio file (.m4a) |
 
-All paths are relative to the `media/` directory in the card pack.
+All paths are relative to the card pack root. A card with `"visual": "media/a1b2c3d4.mp4"` maps to the file `media/a1b2c3d4.mp4` inside the ZIP archive.
 
 ### 3.2 Media Format Requirements
 
@@ -165,8 +189,8 @@ All paths are relative to the `media/` directory in the card pack.
 
 ```json
 "media": {
-  "visual": "a1b2c3d4.mp4",
-  "audio": "a1b2c3d4.m4a"
+  "visual": "media/a1b2c3d4.mp4",
+  "audio": "media/a1b2c3d4.m4a"
 }
 ```
 
@@ -225,10 +249,10 @@ Each analysis type has its own sub-specification defining the `data` structure. 
 | `usageGuide` | Formality, context, grammar, common mistakes | See Appendix A |
 | `definition` | Word definition, pronunciation, part of speech | See Appendix A |
 
-Community-defined types are welcome. To avoid collisions, use a namespace prefix:
+Community-defined types are welcome. To avoid collisions, use the `x_` prefix (consistent with custom fields):
 
 ```
-"type": "x-myapp-pronunciation-score"
+"type": "x_myapp_pronunciation_score"
 ```
 
 ### 4.5 Handling Unknown Types
@@ -276,13 +300,13 @@ The probability (0 to 1) that the user can recall this card at the given timesta
 
 ```json
 "reviewLog": [
-  { "date": "2026-01-15", "rating": 3 },
-  { "date": "2026-01-22", "rating": 4 },
-  { "date": "2026-02-10", "rating": 2 }
+  { "date": "2026-01-15T08:30:00Z", "rating": 3 },
+  { "date": "2026-01-22T19:15:00Z", "rating": 4 },
+  { "date": "2026-02-10T12:00:00Z", "rating": 2 }
 ]
 ```
 
-Rating uses the **universal 1-4 scale**:
+The `date` field MUST be an ISO 8601 datetime string in UTC. Rating uses the **universal 1-4 scale**:
 
 | Rating | Meaning | Anki equivalent |
 |--------|---------|-----------------|
@@ -301,9 +325,9 @@ Rating uses the **universal 1-4 scale**:
     "estimatedAt": "2026-02-19T10:00:00Z"
   },
   "reviewLog": [
-    { "date": "2026-01-15", "rating": 3 },
-    { "date": "2026-01-22", "rating": 4 },
-    { "date": "2026-02-10", "rating": 2 }
+    { "date": "2026-01-15T08:30:00Z", "rating": 3 },
+    { "date": "2026-01-22T19:15:00Z", "rating": 4 },
+    { "date": "2026-02-10T12:00:00Z", "rating": 2 }
   ]
 }
 ```
@@ -381,7 +405,7 @@ The `manifest.json` file describes the pack and contains all cards.
       "cardType": "sentence",
       "source": "The Middle S01E03",
       "media": {
-        "visual": "a1b2c3d4.mp4"
+        "visual": "media/a1b2c3d4.mp4"
       },
       "analysis": [
         {
@@ -445,11 +469,11 @@ Conforming readers MUST ignore fields they don't recognize.
 
 ### 8.2 Custom Analysis Types
 
-Use a namespaced prefix to avoid collisions:
+Use the `x_` prefix to avoid collisions (same convention as custom fields):
 
 ```json
 {
-  "type": "x-duolingo-skill-assessment",
+  "type": "x_duolingo_skill_assessment",
   "version": "1.0",
   "data": { ... }
 }
@@ -498,7 +522,7 @@ Current: `passpack-v1`
 | Enum values | lowercase | `sentence`, `known`, `ai+human` |
 | Deck separator | `/` | `IELTS/Listening/Part 1` |
 | Custom fields | `x_` prefix | `x_myapp_score` |
-| Custom analysis types | `x-` prefix | `x-myapp-grammar` |
+| Custom analysis types | `x_` prefix | `x_myapp_grammar` |
 | Pack files | `.passpack` | `unit_01.passpack` |
 
 ---
@@ -522,7 +546,44 @@ Pack authors MAY choose any license by setting `manifest.license`.
 
 ---
 
-## 12. File Identity
+## 12. Conformance
+
+### 12.1 Reader Conformance
+
+A conforming reader MUST:
+- Parse `manifest.json` as UTF-8 JSON
+- Accept any card with the three required fields (`uuid`, `schemaVersion`, `text`)
+- Ignore unknown fields silently
+- Ignore unknown analysis types silently
+- Reject unknown `schemaVersion` major versions with a clear error
+- Follow import rules (§7): never overwrite user progress or notes on update
+
+### 12.2 Writer Conformance
+
+A conforming writer MUST:
+- Produce valid UTF-8 JSON
+- Include all required fields in every card
+- Ensure `manifest.cardCount` equals `cards.length`
+- Ensure all media paths in cards reference files that exist in the archive
+- Use UUID v4 for card identifiers
+
+---
+
+## 13. Security Considerations
+
+Implementations SHOULD be aware of the following risks:
+
+| Risk | Mitigation |
+|------|------------|
+| **ZIP bombs** | Enforce maximum decompressed size limit before extraction (RECOMMENDED: 2 GB) |
+| **Path traversal** | Media paths MUST NOT contain `..` or absolute paths. Readers MUST reject such paths. |
+| **Malicious media** | Validate media file headers before playback. Do not trust file extensions alone. |
+| **Oversized manifests** | Enforce a maximum `manifest.json` size (RECOMMENDED: 50 MB) |
+| **XSS in text fields** | Apps rendering `text`, `notes`, or analysis data in HTML MUST sanitize output |
+
+---
+
+## 14. File Identity
 
 | Property | Value |
 |----------|-------|
@@ -617,8 +678,6 @@ For vocabulary cards.
 
 ---
 
----
-
 ## Appendix B: Full Card Example
 
 ```json
@@ -631,8 +690,8 @@ For vocabulary cards.
   "targetLang": "zh-CN",
   "source": "The Middle S01E03",
   "media": {
-    "visual": "a1b2c3d4.mp4",
-    "audio": "a1b2c3d4.m4a"
+    "visual": "media/a1b2c3d4.mp4",
+    "audio": "media/a1b2c3d4.m4a"
   },
   "analysis": [
     {
@@ -680,15 +739,25 @@ For vocabulary cards.
       "estimatedAt": "2026-02-19T10:00:00Z"
     },
     "reviewLog": [
-      { "date": "2026-01-15", "rating": 3 },
-      { "date": "2026-01-22", "rating": 4 },
-      { "date": "2026-02-10", "rating": 2 }
+      { "date": "2026-01-15T08:30:00Z", "rating": 3 },
+      { "date": "2026-01-22T19:15:00Z", "rating": 4 },
+      { "date": "2026-02-10T12:00:00Z", "rating": 2 }
     ]
   },
   "createdAt": "2026-01-20T08:00:00Z",
   "updatedAt": "2026-02-19T10:00:00Z"
 }
 ```
+
+---
+
+---
+
+## Changelog
+
+| Date | Change |
+|------|--------|
+| 2026-02-19 | v1.0 Draft — Initial release |
 
 ---
 
